@@ -2,8 +2,12 @@ package com.erselankhan.componseproject.component
 
 import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.rememberScrollableState
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.OutlinedTextField
@@ -31,9 +35,11 @@ fun LoginView() {
         Column(
             Modifier
                 .fillMaxWidth()
-                .fillMaxHeight(),
+                .fillMaxHeight()
+                .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
+
         ) {
 
             Text(
@@ -87,7 +93,7 @@ fun EmailTextField(emailField: String, onEmailChange: (String) -> Unit) {
         value = emailField,
         onValueChange = { onEmailChange(it) },
         label = { Text("Email Address") },
-        maxLines = 1,
+        singleLine = true,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         modifier = Modifier.padding(2.dp)
     )
@@ -99,7 +105,7 @@ fun PasswordTextField(passwordField: String, onPasswordChange: (String) -> Unit)
         value = passwordField,
         onValueChange = { onPasswordChange(it) },
         label = { Text("Password") },
-        maxLines = 1,
+        singleLine = true,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         modifier = Modifier.padding(2.dp),
         visualTransformation = PasswordVisualTransformation()
