@@ -1,9 +1,13 @@
 package com.erselankhan.componseproject.component
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,17 +42,30 @@ fun LoginView() {
                 color = Color.White,
                 fontFamily = FontFamily.SansSerif
             )
-            EmailTextField()
-            PasswordTextField()
-            LoginButton()
+            var emailField by remember {
+                mutableStateOf("Email Text")
+            }
+            var passwordField by remember {
+                mutableStateOf("Password Text")
+            }
+
+            EmailTextField(emailField, onEmailChange = { emailField = it })
+            PasswordTextField(passwordField, onPasswordChange = {passwordField = it})
+            LoginButton( onClick =  {
+                if (validateFields(emailField, passwordField)) {
+                    Log.e("Testing", "Login")
+                } else {
+                    Log.e("Testing", "Error")
+                }
+            })
         }
     }
 }
 
 @Composable
-fun LoginButton() {
+fun LoginButton(onClick: () -> Unit) {
     Button(
-        onClick = { validateFields() },
+        onClick = { onClick() },
         modifier = Modifier
             .padding(2.dp),
         colors = ButtonDefaults.buttonColors(backgroundColor = Color.Black)
@@ -60,19 +77,15 @@ fun LoginButton() {
     }
 }
 
-fun validateFields() {
-
+fun validateFields(emailField: String, passwordField: String): Boolean {
+    return (emailField.contains("@") && passwordField.length >= 6)
 }
 
 @Composable
-fun EmailTextField() {
-    var emailField by remember {
-        mutableStateOf("Email Text")
-    }
-
+fun EmailTextField(emailField: String, onEmailChange: (String) -> Unit) {
     OutlinedTextField(
         value = emailField,
-        onValueChange = { emailField = it },
+        onValueChange = { onEmailChange(it) },
         label = { Text("Email Address") },
         maxLines = 1,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
@@ -81,14 +94,10 @@ fun EmailTextField() {
 }
 
 @Composable
-fun PasswordTextField() {
-    var passwordField by remember {
-        mutableStateOf("Password Text")
-    }
-
+fun PasswordTextField(passwordField: String, onPasswordChange: (String) -> Unit) {
     OutlinedTextField(
         value = passwordField,
-        onValueChange = { passwordField = it },
+        onValueChange = { onPasswordChange(it) },
         label = { Text("Password") },
         maxLines = 1,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
