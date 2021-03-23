@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">ComposeProject</string>
+    <string name="random_text">Text with custom properties</string>
+</resources>
